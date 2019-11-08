@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Platform, StyleSheet } from 'react-native'
+import Toast from 'react-native-root-toast'
 import { connect } from 'react-redux'
 import { addDeck } from '../actions'
-import { white, green, saveDeckTitle } from '../utils/helpers'
+import { white, green, red, saveDeckTitle } from '../utils/helpers'
 
 class AddDeck extends Component {
   state = {
@@ -11,28 +12,41 @@ class AddDeck extends Component {
 
   handleSubmit = () => {
     const { title } = this.state
-    const key = title.replace(/\s/g, '')
 
-    this.props.dispatch(addDeck({
-      [key]: {
-        title,
-        questions : []
-      }
-    })
-  )
-    saveDeckTitle({
-      key,
-      title
-    })
-    .then(() => {
-      // reset state
-      this.setState({
-        title: null
+    if (title === null) {
+      let toast = Toast.show('Please fill the title', {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        backgroundColor: red
       })
+    }
+    else {
+      const key = title.replace(/\s/g, '')
+      this.props.dispatch(addDeck({
+        [key]: {
+          title,
+          questions : []
+        }
+      })
+    )
+      saveDeckTitle({
+        key,
+        title
+      })
+      .then(() => {
+        // reset state
+        this.setState({
+          title: null
+        })
 
-      // redirect to the newly created deck
-      this.toDeck({ id: key, title })
-    })
+        // redirect to the newly created deck
+        this.toDeck({ id: key, title })
+      })
+    }
   }
 
   toDeck = ({ id, title }) => {

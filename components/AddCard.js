@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Platform, StyleSheet } from 'react-native'
+import Toast from 'react-native-root-toast'
 import { connect } from 'react-redux'
 import { addCard } from '../actions'
-import { white, green, addCardToDeck } from '../utils/helpers'
+import { white, green, red, addCardToDeck } from '../utils/helpers'
 
 class AddCard extends Component {
   state = {
@@ -18,23 +19,36 @@ class AddCard extends Component {
       answer
     }
 
-    this.props.dispatch(addCard({
-      key,
-      card
-    })
-  )
-    addCardToDeck({
-      key,
-      question,
-      answer
-    })
-    .then(() => {
-      // reset state
-      this.setState({
-        question: null,
-        answer: null
+    if (question === null  || answer === null) {
+      let toast = Toast.show('Please fill question and answer', {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        backgroundColor: red
       })
-    })
+    }
+    else {
+      this.props.dispatch(addCard({
+        key,
+        card
+      })
+    )
+      addCardToDeck({
+        key,
+        question,
+        answer
+      })
+      .then(() => {
+        // reset state
+        this.setState({
+          question: null,
+          answer: null
+        })
+      })
+    }
   }
 
   render() {
@@ -80,7 +94,7 @@ const styles = StyleSheet.create({
 center: {
   flex: 1,
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'flex-start'
 },
 details: {
   fontSize: 20,
@@ -89,12 +103,14 @@ details: {
 },
 detailsContainer: {
   flexDirection: 'row',
-  flex: 1,
-  // justifyContent: 'space-between'
+  flexWrap: 'wrap',
+  justifyContent: 'center'
 },
 detailsInput: {
-  flex: 1,
+  width: 300,
   height: 35,
+  marginTop: 10,
+  marginBottom: 10,
   borderColor: 'gray',
   borderWidth: 1
 },

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TouchableHighlight, Platform, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import CardFlip from 'react-native-card-flip'
-import { white, green, darkGreen, red, blue, setLocalNotification, clearLocalNotification } from '../utils/helpers'
+import { white, green, darkGreen, red, blue, gray, setLocalNotification, clearLocalNotification } from '../utils/helpers'
 
 
 class Quiz extends Component {
@@ -49,7 +49,7 @@ class Quiz extends Component {
       ...prevState,
       currKey: prevState.currKey + 1
     }))
-    
+
     // hide the next card
     this.flipCard()
   }
@@ -88,6 +88,7 @@ class Quiz extends Component {
     return (
       <View style={{ flex: 1 }}>
         <TouchableHighlight
+          underlayColor={gray}
           onPress={() => this.card.flip()}>
           <Text style={styles.hintText}>💡Answer</Text>
         </TouchableHighlight>
@@ -192,10 +193,10 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontSize: 15,
-    alignSelf: 'stretch',
+    alignSelf: 'center',
     padding: 10,
     marginBottom: 15,
-    color: red
+    color: gray
   },
   iosSubmitBtn: {
     height: 45,

@@ -22,6 +22,7 @@ The project uses below libraries
 - redux
 - react redux binding
 - react native card flip
+- react native toast
 
 
 3. How to run the project
@@ -33,6 +34,7 @@ The project uses below libraries
 - install required packages by running `expo install expo-constants`
 - install required packages by running `yarn add redux react-redux`
 - install required packages by running `yarn add react-native-card-flip`
+- install required packages by running `yarn add react-native-root-toast`
 - run `expo start` to start the application
 - scan the QR code from the terminal to launch the app on your mobile device
 
